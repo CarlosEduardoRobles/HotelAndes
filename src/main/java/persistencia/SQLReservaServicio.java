@@ -1,5 +1,10 @@
 package persistencia;
 
+import java.util.Date;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
 public class SQLReservaServicio 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +37,12 @@ public class SQLReservaServicio
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
-
+	//long idReserva, long idServicio, Date comienzoReserva, Date finalReserva, Integer cantidadAsistentes
+	public long adicionarReservaServicio (PersistenceManager pm, long idReserva, long idServicio, Date comienzoReserva, 
+			Date finalReserva, Integer cantidadAsistentes) 
+	{
+        Query q = pm.newQuery(SQL, "INSERT INTO ReservaServicio (idReserva, idServicio, comienzoReserva, finalReserva) values (?, ?, ?, ?,?)");
+        q.setParameters(idReserva, idServicio, comienzoReserva, finalReserva, cantidadAsistentes);
+        return (long) q.executeUnique();
+	}
 }

@@ -9,20 +9,25 @@ public class ReservaServicio implements VOReservaServicio
 	
 	private Date comienzoReserva, finalReserva;
 	
+	private Integer cantidadAsistentes;
+	
 	public ReservaServicio()
 	{
 		this.idReserva = 0;
 		this.idServicio = 0;
 		this.comienzoReserva = new Timestamp(0);
-		this.finalReserva = new Timestamp(0);;
+		this.finalReserva = new Timestamp(0);
+		this.cantidadAsistentes = 0;
 	}
-
-	public ReservaServicio(long idReserva, long idServicio, Date comienzoReserva, Date finalReserva) 
+	
+	public ReservaServicio(long idReserva, long idServicio, Date comienzoReserva, Date finalReserva,
+			Integer cantidadAsistentes) 
 	{
 		this.idReserva = idReserva;
 		this.idServicio = idServicio;
 		this.comienzoReserva = comienzoReserva;
 		this.finalReserva = finalReserva;
+		this.cantidadAsistentes = cantidadAsistentes;
 	}
 
 	public long getIdReserva() {return idReserva;}

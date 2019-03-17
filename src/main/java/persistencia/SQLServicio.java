@@ -1,5 +1,10 @@
 package persistencia;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.Servicio;
+
 public class SQLServicio 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +37,12 @@ public class SQLServicio
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
-
+	//long id, long idTipoServicio, String nombre, String descripcion, Integer costoUso, Integer capacidad
+	public Servicio darServicioPorId (PersistenceManager pm, long idServicio) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM Servicio WHERE id = ?");
+		q.setResultClass(Servicio.class);
+		q.setParameters(idServicio);
+		return (Servicio) q.executeUnique();
+	}
 }
