@@ -1,5 +1,10 @@
 package persistencia;
 
+import java.util.Date;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
 public class SQLReserva 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +37,52 @@ public class SQLReserva
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
+//  private long id,idTipoDocumentoPersona, documentoPersona;
+//	
+//	private String numeroHabitacion;
+//	
+//	private Double costo;
+//	
+//	private Integer numeroPersonas;
+//	
+//	private Boolean checkIn, checkOut;
+//	
+//	private Date fechaEntrada, fechaSalida;
+//	
+	public long adicionarReserva (PersistenceManager pm, long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
+			Double costo, Integer numeroPersonas, Boolean checkIn, Boolean checkOut, Date fechaEntrada, Date fechaSalida) 
+	{
+		char salio, entro;	
+		
+		if(checkIn == true)
+			entro = 'Y';
+		else
+			entro = 'N';		
+
+		if(checkOut == true)
+			salio = 'Y';
+		else
+			salio = 'N';
+		
+        Query q = pm.newQuery(SQL, "INSERT INTO Reserva (id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo"
+        		+ ", numeroPersonas, checkIn, checkOut, fechaEntrada, fechaSalida) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        q.setParameters(id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, numeroPersonas, entro, salio, fechaEntrada, fechaSalida);
+        return (long) q.executeUnique();
+	}
+	
+	public long checkIn (PersistenceManager pm, long idReserva) 
+	{
+        Query q = pm.newQuery(SQL, "UPDATE Reserva SET checkIn='Y' WHERE id = ?");
+        q.setParameters(idReserva);
+        return (long) q.executeUnique();
+	}
+	
+	public long checkOut (PersistenceManager pm, long idReserva) 
+	{
+        Query q = pm.newQuery(SQL, "UPDATE Reserva SET checkOut='Y' WHERE id = ?");
+        q.setParameters(idReserva);
+        return (long) q.executeUnique();
+	}
+
 
 }
