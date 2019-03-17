@@ -6,7 +6,9 @@ public class Servicio implements VOServicio
 	
 	private String nombre, descripcion;
 	
-	private Integer costoUso, capacidad;
+	private Integer capacidad;
+	
+	private Double costoUso;
 
 	public Servicio() 
 	{
@@ -14,11 +16,11 @@ public class Servicio implements VOServicio
 		this.idTipoServicio = 0;
 		this.nombre = "";
 		this.descripcion = "";
-		this.costoUso = 0;
+		this.costoUso = 0.0;
 		this.capacidad = 0;
 	}
 	
-	public Servicio(long id, long idTipoServicio, String nombre, String descripcion, Integer costoUso,
+	public Servicio(long id, long idTipoServicio, String nombre, String descripcion, Double costoUso,
 			Integer capacidad) 
 	{
 		this.id = id;
@@ -37,7 +39,7 @@ public class Servicio implements VOServicio
 
 	public String getDescripcion() {return descripcion;}
 
-	public Integer getCostoUso() {return costoUso;}
+	public Double getCostoUso() {return costoUso;}
 
 	public Integer getCapacidad() {return capacidad;}
 
@@ -49,7 +51,7 @@ public class Servicio implements VOServicio
 
 	public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
 
-	public void setCostoUso(Integer costoUso) {this.costoUso = costoUso;}
+	public void setCostoUso(Double costoUso) {this.costoUso = costoUso;}
 
 	public void setCapacidad(Integer capacidad) {this.capacidad = capacidad;}
 

@@ -409,12 +409,13 @@ public class PersistenciaHotelAndes
         Transaction tx=pm.currentTransaction();
         try
         {
-        	Integer servicioCapacidad =sqlServicio.darServicioPorId(pm, idServicio).getCapacidad();
+        	Integer servicioCapacidad = sqlServicio.darServicioPorId(pm, idServicio).getCapacidad();
+        	Double costoServicio = sqlServicio.darServicioPorId(pm, idServicio).getCostoUso();
         	if(cantidadAsistentes > 0 || servicioCapacidad < cantidadAsistentes) 
         	{
         		tx.begin();        		
                 long tuplasInsertadas = sqlReservaServicio.
-                		adicionarReservaServicio(pm, idReserva, idServicio, comienzoReserva, finalReserva, cantidadAsistentes);
+                		adicionarReservaServicio(pm, idReserva, idServicio, comienzoReserva, finalReserva, cantidadAsistentes, costoServicio);
                 tx.commit();
                 
                 log.trace ("Inserción de reservaServicio con ids: " 
@@ -443,4 +444,13 @@ public class PersistenciaHotelAndes
             pm.close();
         }
 	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF10-----------------------------
+	//---------------------------------------------------------------
+	//RF10 - REGISTRAR UN CONSUMO DE UN SERVICIO DEL HOTEL POR PARTE DE UN CLIENTE O SUS ACOMPAÑANTES
+	//Registra un consumo de un servicio por parte de un cliente o sus acompañantes. Esta operación es
+	//realizada por un empleado del hotel.
+	
+	
 }

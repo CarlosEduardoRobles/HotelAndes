@@ -10,7 +10,7 @@ public interface VOServicio
 
 	public String getDescripcion();
 
-	public Integer getCostoUso();
+	public Double getCostoUso();
 	
 	public Integer getCapacidad();
 	
