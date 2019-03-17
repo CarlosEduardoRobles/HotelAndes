@@ -1,17 +1,18 @@
 package negocio;
 
-public class Hotel implements VOHotel
+public class Rol implements VORol
 {
 	private long id;
 	
 	private String nombre;
 	
-	public Hotel() {
+	public Rol() 
+	{
 		this.id = 0;
 		this.nombre = "";
 	}
 
-	public Hotel(long id, String nombre) 
+	public Rol(long id, String nombre) 
 	{
 		this.id = id;
 		this.nombre = nombre;
@@ -27,7 +28,7 @@ public class Hotel implements VOHotel
 
 	@Override
 	public String toString() {
-		return "Hotel [id=" + id + ", nombre=" + nombre + "]";
+		return "Rol [id=" + id + ", nombre=" + nombre + "]";
 	}
 	
 	

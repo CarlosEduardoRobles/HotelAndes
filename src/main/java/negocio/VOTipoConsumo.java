@@ -1,10 +1,10 @@
 package negocio;
 
-public interface VOHotel
+public interface VOTipoConsumo 
 {
 	public long getId();
 
-	public String getNombre();
+	public String getTipoConsumo();
 	
 	public String toString();
 }
