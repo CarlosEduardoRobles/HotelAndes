@@ -51,7 +51,7 @@ public class SQLReservaServicio
         Double costoFinal = costo*tiempoUso;
         
         //long idReserva, long idServicio, Double costo, Integer tiempoUso
-        Query q2 = pm.newQuery(SQL, "INSERT INTO ServiciosTomados (idReserva, idServicio, costo, tiempoUso) values (?, ?, ?, ?,?)");
+        Query q2 = pm.newQuery(SQL, "INSERT INTO ServiciosTomados (idReserva, idServicio, costo, tiempoUso) values (?, ?, ?,?)");
         q2.setParameters(idReserva, idServicio, costoFinal, tiempoUso);
         
         //Tambien se agrega a los ServiciosTomados

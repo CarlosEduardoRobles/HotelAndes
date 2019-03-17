@@ -409,8 +409,9 @@ public class PersistenciaHotelAndes
         Transaction tx=pm.currentTransaction();
         try
         {
-        	Integer servicioCapacidad = sqlServicio.darServicioPorId(pm, idServicio).getCapacidad();
-        	Double costoServicio = sqlServicio.darServicioPorId(pm, idServicio).getCostoUso();
+        	Servicio servicio = sqlServicio.darServicioPorId(pm, idServicio);
+        	Integer servicioCapacidad = servicio.getCapacidad();
+        	Double costoServicio = servicio.getCostoUso();
         	if(cantidadAsistentes > 0 || servicioCapacidad < cantidadAsistentes) 
         	{
         		tx.begin();        		
