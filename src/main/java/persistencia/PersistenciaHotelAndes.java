@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import negocio.Reserva;
 import negocio.ReservaServicio;
 import negocio.Servicio;
+import negocio.ServiciosTomados;
 
 public class PersistenciaHotelAndes 
 {
@@ -452,6 +453,35 @@ public class PersistenciaHotelAndes
 	//RF10 - REGISTRAR UN CONSUMO DE UN SERVICIO DEL HOTEL POR PARTE DE UN CLIENTE O SUS ACOMPAÑANTES
 	//Registra un consumo de un servicio por parte de un cliente o sus acompañantes. Esta operación es
 	//realizada por un empleado del hotel.
-	
+	public ServiciosTomados adicionarServiciosTomados(long idReserva, long idServicio, Double costo, Integer tiempoUso)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try
+        {
+            tx.begin();
+            long tuplasInsertadas = sqlServiciosTomados.adicionarServiciosTomados(pm, idReserva, idServicio, costo, tiempoUso);
+            tx.commit();
+            
+            log.trace ("Inserción de reservaServicio con ids: " 
+            		+ idReserva +" "+ idServicio+": " + tuplasInsertadas + " tuplas insertadas");
+            
+            return new ServiciosTomados(idReserva, idServicio, costo, tiempoUso);
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
 	
 }
