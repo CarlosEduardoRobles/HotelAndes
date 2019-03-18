@@ -251,6 +251,7 @@ CREATE TABLE ReservaServicio
     idServicio INTEGER NOT NULL,
     comienzoReserva DATE NOT NULL,
     finalReserva DATE NOT NULL,
+    cantidadAsistentes INTEGER NOT NULL,
     CONSTRAINT reservaServicio_pk PRIMARY KEY(idReserva, idServicio)
 );
 

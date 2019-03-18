@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +14,11 @@ import org.apache.log4j.Logger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import negocio.Reserva;
+import negocio.ReservaServicio;
+import negocio.Servicio;
+import negocio.ServiciosTomados;
 
 public class PersistenciaHotelAndes 
 {
@@ -316,6 +322,7 @@ public class PersistenciaHotelAndes
 	 * Elimina todas las tuplas de todas las tablas de la base de datos
 	 * Crea y ejecuta las sentencias SQL para cada tabla de la base de datos - EL ORDEN ES IMPORTANTE 
 	 * @return Un arreglo con 7 números que indican el número de tuplas borradas en las tablas
+	 * @return Un arreglo con 28 números que indican el número de tuplas borradas 
 	 */
 	public long [] limpiarHotelAndes ()
 	{
@@ -342,10 +349,56 @@ public class PersistenciaHotelAndes
                 tx.rollback();
             
             pm.close();
-        }
-		
+        }		
 	}
-	
+	//---------------------------------------------------------------
+	//------------------------------RF7------------------------------
+	//---------------------------------------------------------------
+	//RF7 - REGISTRAR UNA RESERVA DE ALOJAMIENTO
+	//Reserva una habitación por un período de tiempo, por parte de un cliente, siempre y cuando esté disponible.
+	//Esta operación es realizada por un cliente.
+	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion, Double costo,
+			Integer numeroPersonas, Date fechaEntrada, Date fechaSalida)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try
+        {
+            tx.begin();
+            if(sqlHabitacion.darHabitacionPorNumero(pm, numeroHabitacion) == null)
+            {
+            	  long idReserva = nextval ();
+                  long tuplasInsertadas = sqlReserva.
+                  		adicionarReserva(pm, idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, 
+                  				numeroPersonas, fechaEntrada, fechaSalida);
+                  tx.commit();
+                  
+                  log.trace ("Inserción de reserva con id: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas");
+                  
+                  return new Reserva(idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, numeroPersonas, false, false, fechaEntrada, fechaSalida);   
+            }
+            else
+            {
+            	log.error("La habitacion no esta disponible");
+            	return null;
+            }
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally
+        {
+            if (tx.isActive())            
+                tx.rollback();
+            
+            pm.close();
+        }
+	}
+
+	//RF9
 	public long registrarLlegadaCliente(long idReserva) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -364,6 +417,7 @@ public class PersistenciaHotelAndes
 		}
 	}
 	
+	//RF11
 	public long registrarSalidaCliente(long idReserva) {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
@@ -380,5 +434,91 @@ public class PersistenciaHotelAndes
 			}
 			pm.close();
 		}
+	}
+	//---------------------------------------------------------------
+	//------------------------------RF8------------------------------
+	//---------------------------------------------------------------
+	//RF8 - REGISTRAR UNA RESERVA DE UN SERVICIO DEL HOTEL POR PARTE DE UN CLIENTE
+	//Reserva la prestación de un servicio por parte de un cliente, siempre y cuando haya disponibilidad. 
+	//Esta operación es realizada por un cliente.
+	public ReservaServicio adicionarReservaServicio(long idReserva, long idServicio, Date comienzoReserva, 
+			Date finalReserva, Integer cantidadAsistentes)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try
+        {
+        	Servicio servicio = sqlServicio.darServicioPorId(pm, idServicio);
+        	Integer servicioCapacidad = servicio.getCapacidad();
+        	Double costoServicio = servicio.getCostoUso();
+        	if(cantidadAsistentes > 0 || servicioCapacidad < cantidadAsistentes) 
+        	{
+        		tx.begin();        		
+                long tuplasInsertadas = sqlReservaServicio.
+                		adicionarReservaServicio(pm, idReserva, idServicio, comienzoReserva, finalReserva, cantidadAsistentes, costoServicio);
+                tx.commit();
+                
+                log.trace ("Inserción de reservaServicio con ids: " 
+                		+ idReserva +" "+ idServicio+": " + tuplasInsertadas + " tuplas insertadas");
+                
+                return new ReservaServicio(idReserva, idServicio, comienzoReserva, finalReserva, cantidadAsistentes);
+        	}
+        	else
+        	{
+        		log.error("Deben haber asistentes para realizar una reserva");
+        		return null;
+        	}
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF10-----------------------------
+	//---------------------------------------------------------------
+	//RF10 - REGISTRAR UN CONSUMO DE UN SERVICIO DEL HOTEL POR PARTE DE UN CLIENTE O SUS ACOMPAÑANTES
+	//Registra un consumo de un servicio por parte de un cliente o sus acompañantes. Esta operación es
+	//realizada por un empleado del hotel.
+	public ServiciosTomados adicionarServiciosTomados(long idReserva, long idServicio, Double costo, Integer tiempoUso)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try
+        {
+            tx.begin();
+            long tuplasInsertadas = sqlServiciosTomados.adicionarServiciosTomados(pm, idReserva, idServicio, costo, tiempoUso);
+            tx.commit();
+            
+            log.trace ("Inserción de reservaServicio con ids: " 
+            		+ idReserva +" "+ idServicio+": " + tuplasInsertadas + " tuplas insertadas");
+            
+            return new ServiciosTomados(idReserva, idServicio, costo, tiempoUso);
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
 	}
 }

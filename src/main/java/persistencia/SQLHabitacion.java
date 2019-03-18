@@ -1,5 +1,9 @@
 package persistencia;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.Habitacion;
 public class SQLHabitacion 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +36,22 @@ public class SQLHabitacion
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
-
+	public long adicionarHabitacion (PersistenceManager pm, String numeroHabitacion, String descripcion, long idTipoHabitacion, Integer capacidad,
+			Double precio) 
+	{
+		//Por conveniencia se asume que cuando se crea una habitacion, esta disponbile
+		char si = 'N';
+        Query q = pm.newQuery(SQL, "INSERT INTO Habitacion (numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, disponible)"
+        		+ " values (?, ?, ?, ?, ?, ?)");
+        q.setParameters(numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, si);
+        return (long) q.executeUnique();
+	}
+	
+	public Habitacion darHabitacionPorNumero (PersistenceManager pm, String numeroHabitacion) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM Habitacion WHERE numeroHabitacion = ?");
+		q.setResultClass(Habitacion.class);
+		q.setParameters(numeroHabitacion);
+		return (Habitacion) q.executeUnique();
+	}
 }
