@@ -117,8 +117,6 @@ CREATE TABLE Reserva
 	idTipoDocumentoPersona INTEGER NOT NULL,
     documentoPersona INTEGER NOT NULL,
     numeroHabitacion VARCHAR(80) NOT NULL,
-    costo NUMBER NOT NULL 
-    	CHECK (costo >= 0),
     numeroPersonas INTEGER NOT NULL 
     	CHECK (numeroPersonas > 0),
     checkIn CHAR(1) NOT NULL 

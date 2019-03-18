@@ -41,8 +41,7 @@ public class SQLUtil
 	 */
 	public long nextval (PersistenceManager pm)
 	{
-		//TODO No esto seguro que funcione
-        Query q = pm.newQuery(SQL, "SELECT Parranderos_sequence.nextval FROM DUAL");
+		Query q = pm.newQuery(SQL, "SELECT "+ pha.darSeqParranderos () + ".nextval FROM DUAL");
         q.setResultClass(Long.class);
         long resp = (long) q.executeUnique();
         return resp;

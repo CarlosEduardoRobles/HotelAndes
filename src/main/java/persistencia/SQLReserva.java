@@ -38,13 +38,13 @@ public class SQLReserva
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
 	
-	public long adicionarReserva (PersistenceManager pm, long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
-			Double costo, Integer numeroPersonas, Date fechaEntrada, Date fechaSalida) 
+	public long adicionarReserva (PersistenceManager pm, long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion
+			, Integer numeroPersonas, Date fechaEntrada, Date fechaSalida) 
 	{
 		char no = 'N';
         Query q = pm.newQuery(SQL, "INSERT INTO Reserva (id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo"
-        		+ ", numeroPersonas, checkIn, checkOut, fechaEntrada, fechaSalida) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        q.setParameters(id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, numeroPersonas, no, no, fechaEntrada, fechaSalida);
+        		+ ", numeroPersonas, checkIn, checkOut, fechaEntrada, fechaSalida) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        q.setParameters(id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, numeroPersonas, no, no, fechaEntrada, fechaSalida);
         return (long) q.executeUnique();
 	}
 	

@@ -9,8 +9,6 @@ public class Reserva implements VOReserva
 	
 	private String numeroHabitacion;
 	
-	private Double costo;
-	
 	private Integer numeroPersonas;
 	
 	private Boolean checkIn, checkOut;
@@ -23,7 +21,6 @@ public class Reserva implements VOReserva
 		this.idTipoDocumentoPersona = 0;
 		this.documentoPersona = 0;
 		this.numeroHabitacion = "";
-		this.costo = 0.0;
 		this.numeroPersonas = 0;
 		this.checkIn = false;
 		this.checkOut = false;
@@ -31,14 +28,13 @@ public class Reserva implements VOReserva
 		this.fechaSalida = new Timestamp(0);
 	}
 
-	public Reserva(long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion, Double costo,
+	public Reserva(long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
 			Integer numeroPersonas, Boolean checkIn, Boolean checkOut, Date fechaEntrada, Date fechaSalida) 
 	{
 		this.id = id;
 		this.idTipoDocumentoPersona = idTipoDocumentoPersona;
 		this.documentoPersona = documentoPersona;
 		this.numeroHabitacion = numeroHabitacion;
-		this.costo = costo;
 		this.numeroPersonas = numeroPersonas;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -53,8 +49,6 @@ public class Reserva implements VOReserva
 	public long getDocumentoPersona() {return documentoPersona;}
 
 	public String getNumeroHabitacion() {return numeroHabitacion;}
-
-	public Double getCosto() {return costo;}
 
 	public Integer getNumeroPersonas() {return numeroPersonas;}
 
@@ -74,8 +68,6 @@ public class Reserva implements VOReserva
 
 	public void setNumeroHabitacion(String numeroHabitacion) {this.numeroHabitacion = numeroHabitacion;}
 
-	public void setCosto(Double costo) {this.costo = costo;}
-
 	public void setNumeroPersonas(Integer numeroPersonas) {this.numeroPersonas = numeroPersonas;}
 
 	public void setCheckIn(Boolean checkIn) {this.checkIn = checkIn;}
@@ -89,9 +81,9 @@ public class Reserva implements VOReserva
 	@Override
 	public String toString() {
 		return "Reserva [id=" + id + ", idTipoDocumentoPersona=" + idTipoDocumentoPersona + ", documentoPersona="
-				+ documentoPersona + ", numeroHabitacion=" + numeroHabitacion + ", costo=" + costo + ", numeroPersonas="
-				+ numeroPersonas + ", checkIn=" + checkIn + ", checkOut=" + checkOut + "]";
+				+ documentoPersona + ", numeroHabitacion=" + numeroHabitacion + ", numeroPersonas=" + numeroPersonas
+				+ ", checkIn=" + checkIn + ", checkOut=" + checkOut + ", fechaEntrada=" + fechaEntrada
+				+ ", fechaSalida=" + fechaSalida + "]";
 	}
-	
 	
 }

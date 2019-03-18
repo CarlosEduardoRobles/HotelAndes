@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
@@ -31,8 +33,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import negocio.HotelAndes;
+import negocio.VOReserva;
+import negocio.VOReservaServicio;
 
-public class InterfazHotelAndesApp extends JFrame implements ActionListener {
+public class InterfazHotelAndesApp extends JFrame implements ActionListener 
+{
 	// ---------------------------------------------------------------
 	// -------------------------Constantes----------------------------
 	// ---------------------------------------------------------------
@@ -143,12 +148,12 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener {
 		String titulo = "";
 
 		if (guiConfig == null) {
-			log.info("Se aplica configuración por defecto");
-			titulo = "Parranderos APP Default";
+			log.info("Se aplica configuracion por defecto");
+			titulo = "HotelAndes APP Default";
 			alto = 300;
 			ancho = 500;
 		} else {
-			log.info("Se aplica configuración indicada en el archivo de configuración");
+			log.info("Se aplica configuracion indicada en el archivo de configuracion");
 			titulo = guiConfig.get("title").getAsString();
 			alto = guiConfig.get("frameH").getAsInt();
 			ancho = guiConfig.get("frameW").getAsInt();
@@ -221,7 +226,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener {
 		boolean resp = limpiarArchivo("parranderos.log");
 
 		// Generación de la cadena de caracteres con la traza de la ejecución de la demo
-		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
+		String resultado = "\n\n----------Limpiando el log de parranderos----------\n";
 		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
 		resultado += "\nLimpieza terminada";
 
@@ -252,7 +257,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener {
 	 * @return La cadena con la información de la excepción y detalles adicionales
 	 */
 	private String generarMensajeError(Exception e) {
-		String resultado = "************ Error en la ejecución\n";
+		String resultado = "--------Error en la ejecucion--------\n";
 		resultado += e.getLocalizedMessage() + ", " + darDetalleException(e);
 		resultado += "\n\nRevise datanucleus.log y parranderos.log para más detalles";
 		return resultado;
@@ -306,22 +311,61 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+	
+	public void realizarUnaReserva()
+    {
+    	try 
+    	{
+    		String tipoDocumento = JOptionPane.showInputDialog (this, "Ingrese el numero de su tipo Documento: 1.CC 2.NIT 3.TI", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+    		String numeroDocumento = JOptionPane.showInputDialog (this, "Numero de documento", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+    		String numeroHabitacion = JOptionPane.showInputDialog (this, "Habitacion deseada", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+    		String numeroDePersonas = JOptionPane.showInputDialog (this, "Numero de acompanhantes", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+    		String fechaEntrada = JOptionPane.showInputDialog (this, "Fecha de llegada: dd-MM-yyyy", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+    		String fechaSalida = JOptionPane.showInputDialog (this, "Fecha de salida: dd-MM-yyyy", "Realizar una reserva", JOptionPane.QUESTION_MESSAGE);
+
+    		Date fechaE=(Date) new SimpleDateFormat("dd-MM-yyyy").parse(fechaEntrada);  
+    		Date fechaS=(Date) new SimpleDateFormat("dd-MM-yyyy").parse(fechaSalida);  
+    		
+    		if (tipoDocumento != null && numeroDocumento != null && numeroHabitacion != null)
+    		{
+        		VOReserva tb = hotelAndes.realizarUnaReserva(Long.valueOf(tipoDocumento), Long.valueOf(numeroDocumento), numeroHabitacion
+        				,Integer.valueOf(numeroDePersonas),fechaE , fechaS);
+        		if (tb == null)
+        		{
+        			throw new Exception ("No se pudo crear la reserva");
+        		}
+        		String resultado = "La reserva se realizo correctamente";
+    			panelDatos.actualizarInterfaz(resultado);
+    		}
+    		else
+    		{
+    			panelDatos.actualizarInterfaz("Operación cancelada por el usuario");
+    		}
+		} 
+    	catch (Exception e) 
+    	{
+			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+    }
 
 	/**
 	 * Este método ejecuta la aplicación, creando una nueva interfaz
 	 * 
 	 * @param args Arreglo de argumentos que se recibe por línea de comandos
 	 */
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) 
+	{
+		try 
+		{
 
 			// Unifica la interfaz para Mac y para Windows.
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			InterfazHotelAndesApp interfaz = new InterfazHotelAndesApp();
 			interfaz.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} 
+		catch (Exception e) {e.printStackTrace();}
 	}
 
 }
