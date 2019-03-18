@@ -12,8 +12,6 @@ public interface VOReserva
 
 	public String getNumeroHabitacion();
 
-	public Double getCosto();
-
 	public Integer getNumeroPersonas();
 
 	public Boolean getCheckIn();

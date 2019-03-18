@@ -54,11 +54,11 @@ public class HotelAndes
 	//RF7 - REGISTRAR UNA RESERVA DE ALOJAMIENTO
 	//Reserva una habitación por un período de tiempo, por parte de un cliente, siempre y cuando esté disponible.
 	//Esta operación es realizada por un cliente.
-	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion, Double costo,
+	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
 			Integer numeroPersonas, Date fechaEntrada, Date fechaSalida)
 	{
         log.info ("Adicionando eserva habitacion: " + numeroHabitacion);
-        Reserva reserva = pp.realizarUnaReserva(idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, numeroPersonas, fechaEntrada, fechaSalida);		
+        Reserva reserva = pp.realizarUnaReserva(idTipoDocumentoPersona, documentoPersona, numeroHabitacion, numeroPersonas, fechaEntrada, fechaSalida);		
         log.info ("Adicionando Tipo de bebida: " + reserva);
         return reserva;
 	}

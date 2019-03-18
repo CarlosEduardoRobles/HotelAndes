@@ -240,6 +240,11 @@ public class PersistenciaHotelAndes
 	//------------------------------------------------
 	//---------------------Metodos--------------------
 	//------------------------------------------------
+	public String darSeqParranderos ()
+	{
+		return tablas.get (0);
+	}
+	
 	/**
 	 * Retorna el unico objeto PersistenciaHotelAndes existente
 	 * @return el unico objeto PersistenciaHotelAndes existente
@@ -302,7 +307,7 @@ public class PersistenciaHotelAndes
 	
 	private long nextval ()
 	{
-        long resp = sqlUtil.nextval (pmf.getPersistenceManager());
+        long resp = sqlUtil.nextval(pmf.getPersistenceManager());
         log.trace ("Generando secuencia: " + resp);
         return resp;
     }
@@ -357,7 +362,7 @@ public class PersistenciaHotelAndes
 	//RF7 - REGISTRAR UNA RESERVA DE ALOJAMIENTO
 	//Reserva una habitación por un período de tiempo, por parte de un cliente, siempre y cuando esté disponible.
 	//Esta operación es realizada por un cliente.
-	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion, Double costo,
+	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
 			Integer numeroPersonas, Date fechaEntrada, Date fechaSalida)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -369,13 +374,13 @@ public class PersistenciaHotelAndes
             {
             	  long idReserva = nextval ();
                   long tuplasInsertadas = sqlReserva.
-                  		adicionarReserva(pm, idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, 
+                  		adicionarReserva(pm, idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, 
                   				numeroPersonas, fechaEntrada, fechaSalida);
                   tx.commit();
                   
                   log.trace ("Inserción de reserva con id: " + idReserva + ": " + tuplasInsertadas + " tuplas insertadas");
                   
-                  return new Reserva(idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo, numeroPersonas, false, false, fechaEntrada, fechaSalida);   
+                  return new Reserva(idReserva, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, numeroPersonas, false, false, fechaEntrada, fechaSalida);   
             }
             else
             {
