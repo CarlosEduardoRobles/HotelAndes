@@ -313,10 +313,9 @@ public class PersistenciaHotelAndes
 	}
 	
 	/**
-	 * Elimina todas las tuplas de todas las tablas de la base de datos de Parranderos
+	 * Elimina todas las tuplas de todas las tablas de la base de datos
 	 * Crea y ejecuta las sentencias SQL para cada tabla de la base de datos - EL ORDEN ES IMPORTANTE 
-	 * @return Un arreglo con 7 números que indican el número de tuplas borradas en las tablas GUSTAN, SIRVEN, VISITAN, BEBIDA,
-	 * TIPOBEBIDA, BEBEDOR y BAR, respectivamente
+	 * @return Un arreglo con 7 números que indican el número de tuplas borradas en las tablas
 	 */
 	public long [] limpiarHotelAndes ()
 	{
@@ -345,5 +344,41 @@ public class PersistenciaHotelAndes
             pm.close();
         }
 		
+	}
+	
+	public long registrarLlegadaCliente(long idReserva) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			long resp = sqlReserva.checkIn(pm, idReserva);
+			return resp;
+		}
+		catch(Exception e) {
+			return -1;
+		}
+		finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+	
+	public long registrarSalidaCliente(long idReserva) {
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			long resp = sqlReserva.checkOut(pm, idReserva);
+			return resp;
+		}
+		catch(Exception e) {
+			return -1;
+		}
+		finally {
+			if(tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 }
