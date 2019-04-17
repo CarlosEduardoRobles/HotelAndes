@@ -1,3 +1,5 @@
+create sequence HotelAndes_sequence;
+
 CREATE TABLE Hotel
 (
     id INTEGER NOT NULL,
@@ -40,7 +42,7 @@ CREATE TABLE Dotacion
 CREATE TABLE Persona
 (
     idTipoDocumento INTEGER NOT NULL,
-    documento INTEGER NOT NULL,
+    documento VARCHAR(80) NOT NULL,
     nombre VARCHAR(80) NOT NULL,
     correo VARCHAR(80) NOT NULL,
     idRol INTEGER NOT NULL,
@@ -115,7 +117,7 @@ CREATE TABLE Reserva
 (
 	id INTEGER NOT NULL,
 	idTipoDocumentoPersona INTEGER NOT NULL,
-    documentoPersona INTEGER NOT NULL,
+    documentoPersona VARCHAR(80) NOT NULL,
     numeroHabitacion VARCHAR(80) NOT NULL,
     numeroPersonas INTEGER NOT NULL 
     	CHECK (numeroPersonas > 0),
@@ -144,7 +146,7 @@ CREATE TABLE PersonasHotel
 (
 	idHotel INTEGER NOT NULL,
     idTipoDocumentoPersona INTEGER,
-    documentoPersona INTEGER NOT NULL,
+    documentoPersona VARCHAR(80) NOT NULL,
     CONSTRAINT personasHotel_pk PRIMARY KEY(idHotel, idTipoDocumentoPersona, documentoPersona)
 );
 
@@ -259,6 +261,103 @@ CREATE TABLE FacturasCuentaConsumo
     idCuentaConsumo INTEGER NOT NULL,
     CONSTRAINT facturasCuentaConsumo_pk PRIMARY KEY(idFactura, idCuentaConsumo)
 );
+
+CREATE TABLE Convencion
+(
+    id INTEGER NOT NULL,
+    cantParticipantes INTEGER NOT NULL
+        CHECK (cantParticipantes > 0),
+    CONSTRAINT convencion_pk PRIMARY KEY(id)
+);
+
+CREATE TABLE ParticipantesConvencion
+(
+    idTipoDocumentoPersona INTEGER NOT NULL,
+    documentoPersona VARCHAR(80) NOT NULL,
+    idConvencion INTEGER NOT NULL,
+    CONSTRAINT participantesConvencion_pk PRIMARY KEY(idTipoDocumentoPersona, documentoPersona, idConvencion)
+);
+
+ALTER TABLE ParticipantesConvencion
+    ADD    FOREIGN KEY (idTipoDocumentoPersona, documentoPersona)
+    REFERENCES Persona(idTipoDocumento, documento)
+    ON DELETE CASCADE
+;
+
+ALTER TABLE ParticipantesConvencion
+    ADD    FOREIGN KEY (idConvencion)
+    REFERENCES Convencion(id)
+    ON DELETE CASCADE
+;
+
+CREATE TABLE ServiciosRequeridos
+(
+    idConvencion INTEGER NOT NULL,
+    idServicio INTEGER NOT NULL,
+    cantParticipantes INTEGER NOT NULL,
+    comienzoReserva DATE NOT NULL,
+    finalReserva DATE NOT NULL,
+    CONSTRAINT serviciosRequeridos_pk PRIMARY KEY(idConvencion, idServicio)
+);
+
+ALTER TABLE ServiciosRequeridos
+    ADD    FOREIGN KEY (idConvencion)
+    REFERENCES Convencion(id)
+    ON DELETE CASCADE
+;
+
+ALTER TABLE ServiciosRequeridos
+    ADD    FOREIGN KEY (idServicio)
+    REFERENCES Servicio(id)
+    ON DELETE CASCADE
+;
+
+CREATE TABLE ReservaParticipanteConvencion
+(
+    idTipoDocumentoPersona INTEGER NOT NULL,
+    documentoPersona VARCHAR(80) NOT NULL,
+    idConvencion INTEGER NOT NULL,
+    idReserva INTEGER NOT NULL,
+    CONSTRAINT reservaParticipanteConvencion_pk 
+        PRIMARY KEY(idTipoDocumentoPersona, documentoPersona, idConvencion)
+);
+
+ALTER TABLE ReservaParticipanteConvencion
+    ADD    FOREIGN KEY (idTipoDocumentoPersona, documentoPersona)
+    REFERENCES Persona(idTipoDocumento, documento)
+    ON DELETE CASCADE
+;
+
+ALTER TABLE ReservaParticipanteConvencion
+    ADD    FOREIGN KEY (idConvencion)
+    REFERENCES Convencion(id)
+    ON DELETE CASCADE
+;
+
+ALTER TABLE ReservaParticipanteConvencion
+    ADD    FOREIGN KEY (idReserva)
+    REFERENCES Reserva(id)
+    ON DELETE CASCADE
+;
+
+CREATE TABLE PlanConvencion
+(
+    idConvencion INTEGER NOT NULL,
+    idPlanConsumo INTEGER NOT NULL,
+    CONSTRAINT planConvencion_pk PRIMARY KEY(idConvencion)
+);
+
+ALTER TABLE PlanConvencion
+    ADD    FOREIGN KEY (idConvencion)
+    REFERENCES Convencion(id)
+    ON DELETE CASCADE
+;
+
+ALTER TABLE PlanConvencion
+    ADD    FOREIGN KEY (idConvencion)
+    REFERENCES PlanDeConsumo(id)
+    ON DELETE CASCADE
+;
 ------------------------Modificaciones Tablas------------------------
 ALTER TABLE FacturasCuentaConsumo
     ADD    FOREIGN KEY (idFactura)

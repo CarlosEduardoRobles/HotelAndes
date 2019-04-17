@@ -328,7 +328,7 @@ public class InterfazHotelAndesApp extends JFrame implements ActionListener
     		
     		if (tipoDocumento != null && numeroDocumento != null && numeroHabitacion != null)
     		{
-        		VOReserva tb = hotelAndes.realizarUnaReserva(Long.valueOf(tipoDocumento), Long.valueOf(numeroDocumento), numeroHabitacion
+        		VOReserva tb = hotelAndes.realizarUnaReserva(Long.valueOf(tipoDocumento), numeroDocumento, numeroHabitacion
         				,Integer.valueOf(numeroDePersonas),fechaE , fechaS);
         		if (tb == null)
         		{

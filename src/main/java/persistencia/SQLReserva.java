@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.jdo.PersistenceManager;
@@ -36,16 +37,15 @@ public class SQLReserva
 
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
-	// ---------------------------------------------------------------
-	
-	public long adicionarReserva (PersistenceManager pm, long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion
+	// ---------------------------------------------------------------	
+	public long adicionarReserva (PersistenceManager pm, long id, long idTipoDocumentoPersona, String documentoPersona, String numeroHabitacion
 			, Integer numeroPersonas, Date fechaEntrada, Date fechaSalida) 
 	{
 		char no = 'N';
         Query q = pm.newQuery(SQL, "INSERT INTO Reserva (id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo"
         		+ ", numeroPersonas, checkIn, checkOut, fechaEntrada, fechaSalida) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         q.setParameters(id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, numeroPersonas, no, no, fechaEntrada, fechaSalida);
-        return (long) q.executeUnique();
+        return ((BigDecimal) q.executeUnique()).longValue ();
 	}
 	
 	public long checkIn (PersistenceManager pm, long idReserva) 
