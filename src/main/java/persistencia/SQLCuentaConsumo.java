@@ -1,5 +1,12 @@
 package persistencia;
 
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.CuentaConsumo;
+
 public class SQLCuentaConsumo 
 {
 	// ---------------------------------------------------------------
@@ -32,4 +39,42 @@ public class SQLCuentaConsumo
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long adicionarCuentaConsumo(PersistenceManager pm, long idReserva, long id) {
+		Query q = pm.newQuery(SQL, "INSERT INTO CuentaConsumo WHERE idReserva = ? AND id = ?");
+		q.setParameters(idReserva, id);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long eliminarCuentaConsumo(PersistenceManager pm, long idReserva, long id) {
+		Query q = pm.newQuery(SQL, "DELETE FROM CuentaConsumo WHERE idReserva = ? AND id = ?");
+		q.setParameters(idReserva, id);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @return
+	 */
+	public List<CuentaConsumo> darTodosConsumoReserva(PersistenceManager pm) {
+		Query q = pm.newQuery(SQL, "SELECT * FROM CuentaConsumo");
+		q.setResultClass(CuentaConsumo.class);
+		List<CuentaConsumo> rta = (List<CuentaConsumo>) q.execute();
+		return rta;
+	}
 }

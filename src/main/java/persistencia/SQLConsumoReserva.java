@@ -1,5 +1,10 @@
 package persistencia;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import java.util.List;
+import negocio.ConsumoReserva;
+
 public class SQLConsumoReserva 
 {
 	//---------------------------------------------------------------
@@ -31,5 +36,43 @@ public class SQLConsumoReserva
 	//---------------------------------------------------------------
 	//---------------------------Metodos-----------------------------
 	//---------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long adicionarConsumoReserva(PersistenceManager pm, long idReserva, long idPlanConsumo) {
+		Query q = pm.newQuery(SQL, "INSERT INTO ConsumoReserva WHERE idReserva = ? AND idPlanConsumo = ?");
+		q.setParameters(idReserva, idPlanConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long eliminarConsumoReserva(PersistenceManager pm, long idReserva, long idPlanConsumo) {
+		Query q = pm.newQuery(SQL, "DELETE FROM ConsumoReserva WHERE idReserva = ? AND idPlanConsumo = ?");
+		q.setParameters(idReserva, idPlanConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @return
+	 */
+	public List<ConsumoReserva> darTodosConsumoReserva(PersistenceManager pm) {
+		Query q = pm.newQuery(SQL, "SELECT * FROM ConsumoReserva");
+		q.setResultClass(ConsumoReserva.class);
+		List<ConsumoReserva> rta = (List<ConsumoReserva>) q.execute();
+		return rta;
+	}
 	
 }
