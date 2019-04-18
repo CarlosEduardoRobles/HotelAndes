@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class Reserva implements VOReserva
 {
-	private long id,idTipoDocumentoPersona, documentoPersona;
+	private long id,idTipoDocumentoPersona;
 	
-	private String numeroHabitacion;
+	private String numeroHabitacion, documentoPersona;
 	
 	private Integer numeroPersonas;
 	
@@ -19,7 +19,7 @@ public class Reserva implements VOReserva
 	{
 		this.id = 0;
 		this.idTipoDocumentoPersona = 0;
-		this.documentoPersona = 0;
+		this.documentoPersona = "";
 		this.numeroHabitacion = "";
 		this.numeroPersonas = 0;
 		this.checkIn = false;
@@ -28,7 +28,7 @@ public class Reserva implements VOReserva
 		this.fechaSalida = new Timestamp(0);
 	}
 
-	public Reserva(long id, long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
+	public Reserva(long id, long idTipoDocumentoPersona, String documentoPersona, String numeroHabitacion,
 			Integer numeroPersonas, Boolean checkIn, Boolean checkOut, Date fechaEntrada, Date fechaSalida) 
 	{
 		this.id = id;
@@ -46,7 +46,7 @@ public class Reserva implements VOReserva
 
 	public long getIdTipoDocumentoPersona() {return idTipoDocumentoPersona;}
 
-	public long getDocumentoPersona() {return documentoPersona;}
+	public String getDocumentoPersona() {return documentoPersona;}
 
 	public String getNumeroHabitacion() {return numeroHabitacion;}
 
@@ -64,7 +64,7 @@ public class Reserva implements VOReserva
 
 	public void setIdTipoDocumentoPersona(long idTipoDocumentoPersona) {this.idTipoDocumentoPersona = idTipoDocumentoPersona;}
 
-	public void setDocumentoPersona(long documentoPersona) {this.documentoPersona = documentoPersona;}
+	public void setDocumentoPersona(String documentoPersona) {this.documentoPersona = documentoPersona;}
 
 	public void setNumeroHabitacion(String numeroHabitacion) {this.numeroHabitacion = numeroHabitacion;}
 

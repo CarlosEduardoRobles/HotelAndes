@@ -6,7 +6,7 @@ public interface VOPersona
 
 	public long getIdRol();
 
-	public Integer getDocumento();
+	public String getDocumento();
 
 	public String getNombre();
 

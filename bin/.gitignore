@@ -1,3 +1,13 @@
+<<<<<<< HEAD
 /negocio/
 /persistencia/
 /test/
+=======
+/META-INF/
+/config/
+/hbase-site.xml
+/interfazApp/
+/log4j.properties
+/negocio/
+/persistencia/
+>>>>>>> 6d9557874048e9b320cf0c8022ba03f7c3c68583

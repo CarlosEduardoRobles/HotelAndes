@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 19:13:54,668 (main) DEBUG [DataNucleus.General] - Using PluginRegistry org.datanucleus.plugin.NonManagedPluginRegistry
 19:13:54,692 (main) DEBUG [DataNucleus.General] - Registering bundle org.datanucleus.api.jdo version 5.1.7 at URL file:/C:/Users/carlo/OneDrive/Documentos/Uniandes/Sistemas%20Transaccionales/2019-2/Interacion1/HotelAndes/lib/datanucleus-api-jdo-5.1.7.jar.
 19:13:54,706 (main) DEBUG [DataNucleus.General] - Leyendo extension-points y extensiones del archivo de plug-in jar:file:/C:/Users/carlo/OneDrive/Documentos/Uniandes/Sistemas%20Transaccionales/2019-2/Interacion1/HotelAndes/lib/datanucleus-api-jdo-5.1.7.jar!/plugin.xml.
@@ -2634,3 +2635,6 @@ With the Partitioning, OLAP, Advanced Analytics and Real Application Testing opt
 05:06:10,155 (AWT-EventQueue-0) DEBUG [DataNucleus.Connection] - ManagedConnection CLOSED : "org.datanucleus.store.rdbms.ConnectionFactoryImpl$ManagedConnectionImpl@45fc0d7a [conn=org.datanucleus.store.rdbms.datasource.dbcp2.PoolingDataSource$PoolGuardConnectionWrapper@4c0bd08b, commitOnRelease=false, closeOnRelease=false, closeOnTxnEnd=true]"
 05:06:10,170 (AWT-EventQueue-0) DEBUG [DataNucleus.Transaction] - Transaction rolled back in 33 ms
 05:06:10,170 (AWT-EventQueue-0) DEBUG [DataNucleus.Persistence] - ExecutionContext CLOSED "org.datanucleus.ExecutionContextImpl@437112a6"
+=======
+
+>>>>>>> 6d9557874048e9b320cf0c8022ba03f7c3c68583

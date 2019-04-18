@@ -8,7 +8,7 @@ public interface VOReserva
 
 	public long getIdTipoDocumentoPersona();
 
-	public long getDocumentoPersona();
+	public String getDocumentoPersona();
 
 	public String getNumeroHabitacion();
 

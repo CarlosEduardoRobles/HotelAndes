@@ -211,11 +211,11 @@ public class PersistenciaHotelAndes
 	 */
 	private PersistenciaHotelAndes()
 	{
-		pmf = JDOHelper.getPersistenceManagerFactory("SuperAndes");		
+		pmf = JDOHelper.getPersistenceManagerFactory("Parranderos");		
 		crearClasesSQL ();
 		
 		tablas = new LinkedList<String> ();
-		tablas.add ("SuperAndes_sequence");
+		tablas.add ("HotelAndes_sequence");
 		tablas.add ("CONSUMORESERVA");	tablas.add ("CUENTACONSUMO");	tablas.add ("DOTACION");	tablas.add ("DOTACIONHABITACION");	tablas.add ("FACTURA");
 		tablas.add ("FACTURASCUENTACONSUMO");	tablas.add ("HABITACION"); tablas.add ("HABITACIONESHOTEL"); tablas.add ("HORARIOSERVICIO"); tablas.add ("HOTEL");
 		tablas.add ("PERSONA"); tablas.add ("PERSONASHOTEL"); tablas.add ("PLANDECONSUMO"); tablas.add ("PLANESHOTEL"); tablas.add ("PRODUCTO");
@@ -362,7 +362,7 @@ public class PersistenciaHotelAndes
 	//RF7 - REGISTRAR UNA RESERVA DE ALOJAMIENTO
 	//Reserva una habitación por un período de tiempo, por parte de un cliente, siempre y cuando esté disponible.
 	//Esta operación es realizada por un cliente.
-	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, long documentoPersona, String numeroHabitacion,
+	public Reserva realizarUnaReserva(long idTipoDocumentoPersona, String documentoPersona, String numeroHabitacion,
 			Integer numeroPersonas, Date fechaEntrada, Date fechaSalida)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();

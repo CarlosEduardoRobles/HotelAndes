@@ -5,21 +5,19 @@ public class Persona implements VOPersona
 	private long idTipoDocumento;
 	
 	private long idRol;
-	
-	private Integer documento;
-	
-	private String nombre, correo;
+		
+	private String nombre, correo, documento;
 	
 	public Persona() 
 	{
 		this.idTipoDocumento = 0;
 		this.idRol = 0;
-		this.documento = 0;
+		this.documento = "";
 		this.nombre = "";
 		this.correo = "";
 	}
 
-	public Persona(long idTipoDocumento, long idRol, Integer documento, String nombre, String correo)
+	public Persona(long idTipoDocumento, long idRol, String documento, String nombre, String correo)
 	{
 		this.idTipoDocumento = idTipoDocumento;
 		this.idRol = idRol;
@@ -32,7 +30,7 @@ public class Persona implements VOPersona
 
 	public long getIdRol() {return idRol;}
 
-	public Integer getDocumento() {	return documento;}
+	public String getDocumento() {	return documento;}
 
 	public String getNombre() {return nombre;}
 
@@ -42,7 +40,7 @@ public class Persona implements VOPersona
 
 	public void setIdRol(long idRol) {this.idRol = idRol;}
 
-	public void setDocumento(Integer documento) {this.documento = documento;}
+	public void setDocumento(String documento) {this.documento = documento;}
 
 	public void setNombre(String nombre) {this.nombre = nombre;}
 
