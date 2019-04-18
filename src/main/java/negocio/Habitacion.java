@@ -12,7 +12,7 @@ public class Habitacion implements VOHabitacion
 	
 	private Double precio;
 	
-	private Boolean disponible;
+	private Boolean disponible, mantenimiento;
 	
 	public Habitacion() 
 	{
@@ -22,20 +22,22 @@ public class Habitacion implements VOHabitacion
 		this.capacidad = 0;
 		this.precio = 0.0;
 		this.disponible = false;
+		this.mantenimiento = false;
 	}
 	
 	public Habitacion(String numeroHabitacion, String descripcion, long idTipoHabitacion, Integer capacidad,
-			Double precio, Boolean disponible) 
+			Double precio, Boolean disponible, Boolean mantenimiento) 
 	{
+		super();
 		this.numeroHabitacion = numeroHabitacion;
 		this.descripcion = descripcion;
 		this.idTipoHabitacion = idTipoHabitacion;
 		this.capacidad = capacidad;
 		this.precio = precio;
 		this.disponible = disponible;
+		this.mantenimiento = mantenimiento;
 	}
-
-
+	
 	public String getNumeroHabitacion() {return numeroHabitacion;}
 
 	public String getDescripcion() {return descripcion;}
@@ -60,11 +62,15 @@ public class Habitacion implements VOHabitacion
 
 	public void setPrecio(Double precio) {this.precio = precio;}
 
+	public Boolean getMantenimiento() {return mantenimiento;}
+
+	public void setMantenimiento(Boolean mantenimiento) {this.mantenimiento = mantenimiento;}
+
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "Habitacion [numeroHabitacion=" + numeroHabitacion + ", descripcion=" + descripcion
-				+ ", idTipoHabitacion=" + idTipoHabitacion + ", capacidad=" + capacidad + ", precio=" + precio + "]";
+				+ ", idTipoHabitacion=" + idTipoHabitacion + ", capacidad=" + capacidad + ", precio=" + precio
+				+ ", disponible=" + disponible + ", mantenimiento=" + mantenimiento + "]";
 	}
-	
-	
 }

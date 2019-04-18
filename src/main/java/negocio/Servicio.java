@@ -9,6 +9,8 @@ public class Servicio implements VOServicio
 	private Integer capacidad;
 	
 	private Double costoUso;
+	
+	private Boolean mantenimiento;
 
 	public Servicio() 
 	{
@@ -18,17 +20,19 @@ public class Servicio implements VOServicio
 		this.descripcion = "";
 		this.costoUso = 0.0;
 		this.capacidad = 0;
-	}
-	
-	public Servicio(long id, long idTipoServicio, String nombre, String descripcion, Double costoUso,
-			Integer capacidad) 
-	{
+		this.mantenimiento = false;
+	}	
+
+	public Servicio(long id, long idTipoServicio, String nombre, String descripcion, Integer capacidad, Double costoUso,
+			Boolean mantenimiento) {
+		super();
 		this.id = id;
 		this.idTipoServicio = idTipoServicio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.costoUso = costoUso;
 		this.capacidad = capacidad;
+		this.costoUso = costoUso;
+		this.mantenimiento = mantenimiento;
 	}
 
 	public long getId() {return id;}
@@ -54,12 +58,14 @@ public class Servicio implements VOServicio
 	public void setCostoUso(Double costoUso) {this.costoUso = costoUso;}
 
 	public void setCapacidad(Integer capacidad) {this.capacidad = capacidad;}
+	
+		public Boolean getMantenimiento() {return mantenimiento;}
+
+	public void setMantenimiento(Boolean mantenimiento) {this.mantenimiento = mantenimiento;}
 
 	@Override
 	public String toString() {
 		return "Servicio [id=" + id + ", idTipoServicio=" + idTipoServicio + ", nombre=" + nombre + ", descripcion="
 				+ descripcion + ", costoUso=" + costoUso + ", capacidad=" + capacidad + "]";
-	}
-	
-	
+	}	
 }

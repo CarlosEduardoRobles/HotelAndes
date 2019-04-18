@@ -51,8 +51,4 @@ public class Persona implements VOPersona
 		return "Persona [idTipoDocumento=" + idTipoDocumento + ", idRol=" + idRol + ", documento=" + documento
 				+ ", nombre=" + nombre + ", correo=" + correo + "]";
 	}
-	
-	
-	
-	
 }

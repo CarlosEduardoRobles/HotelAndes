@@ -5,7 +5,8 @@ INSERT INTO Rol VALUES (1, 'Cliente');
 INSERT INTO Rol VALUES (2, 'Recepcionista');
 INSERT INTO Rol VALUES (3, 'Empleado');
 INSERT INTO Rol VALUES (4, 'Administrador');
-INSERT INTO Rol VALUES (5, 'Gerente');
+INSERT INTO Rol VALUES (5, 'Gerente'); 
+INSERT INTO Rol VALUES (6, 'OrganizadorEventos');
 
 --RF2 - Registrar Usuario
 --Los usuarios tienen una identificación (Tipo de documento, número de documento), un nombre, un correo
@@ -15,22 +16,22 @@ INSERT INTO TipoDocumento VALUES (1, 'CC'); --Cedula
 INSERT INTO TipoDocumento VALUES (2, 'NIT'); --Nit
 INSERT INTO TipoDocumento VALUES (3, 'TI'); --Tarjeta Identidad
 
-INSERT INTO Persona VALUES (1, 1073251033, 'Carlos Robles', 'ce.robles@uniandes.edu.co', 5); --Gerente
+INSERT INTO Persona VALUES (1, '1073251033', 'Carlos Robles', 'ce.robles@uniandes.edu.co', 5); --Gerente
 
-INSERT INTO Persona VALUES (1, 2450736189, 'Hazlett Jeffcoat', 'akick0@tripod.com', 4); --Administrador
+INSERT INTO Persona VALUES (1, '2450736189', 'Hazlett Jeffcoat', 'akick0@tripod.com', 4); --Administrador
 
-INSERT INTO Persona VALUES (1, 5970714529, 'Britteny Scamerdine', 'mmacgowing1@barnesandnoble.com', 2); --1er Recepcionista
-INSERT INTO Persona VALUES (1, 7443940732, 'Rhianna Rickerd', 'mmaffioni2@networkadvertising.org', 2); --2do Recepcionista
+INSERT INTO Persona VALUES (1, '5970714529', 'Britteny Scamerdine', 'mmacgowing1@barnesandnoble.com', 2); --1er Recepcionista
+INSERT INTO Persona VALUES (1, '7443940732', 'Rhianna Rickerd', 'mmaffioni2@networkadvertising.org', 2); --2do Recepcionista
 
-INSERT INTO Persona VALUES (1, 3227492657, 'Marlow Mandell', 'bfilippyev4@seattletimes.com', 3); --1er Empleado
-INSERT INTO Persona VALUES (1, 6980626294, 'Ruthie Sheabe', 'seveleigh5@independent.co.uk', 3); --2do Empleado
-INSERT INTO Persona VALUES (1, 4620713277, 'Liliane Pieche', 'sloram6@t.co', 3); --3er Empleado
-INSERT INTO Persona VALUES (1, 3991351237, 'Baron Robatham', 'aliston8@stanford.edu', 3); --4to Empleado
+INSERT INTO Persona VALUES (1, '3227492657', 'Marlow Mandell', 'bfilippyev4@seattletimes.com', 3); --1er Empleado
+INSERT INTO Persona VALUES (1, '6980626294', 'Ruthie Sheabe', 'seveleigh5@independent.co.uk', 3); --2do Empleado
+INSERT INTO Persona VALUES (1, '4620713277', 'Liliane Pieche', 'sloram6@t.co', 3); --3er Empleado
+INSERT INTO Persona VALUES (1, '3991351237', 'Baron Robatham', 'aliston8@stanford.edu', 3); --4to Empleado
 
-INSERT INTO Persona VALUES (2, 90080024243, 'Davida Bickerstasse', 'rmatthissonc@google.nl', 1); --1er Cliente
-INSERT INTO Persona VALUES (1, 8387371999, 'Anne-marie Revely', 'beynond@infoseek.co.jp', 1); --2do Cliente
-INSERT INTO Persona VALUES (3, 98052759820, 'Kathleen Gerauld', 'carillog@storify.com', 1); --3er Cliente
-INSERT INTO Persona VALUES (1, 5439778536, 'Timmie Went', 'lduvall@noaa.gov', 1); --4to Cliente
+INSERT INTO Persona VALUES (2, '90080024243', 'Davida Bickerstasse', 'rmatthissonc@google.nl', 1); --1er Cliente
+INSERT INTO Persona VALUES (1, '8387371999', 'Anne-marie Revely', 'beynond@infoseek.co.jp', 1); --2do Cliente
+INSERT INTO Persona VALUES (3, '98052759820', 'Kathleen Gerauld', 'carillog@storify.com', 1); --3er Cliente
+INSERT INTO Persona VALUES (1, '5439778536', 'Timmie Went', 'lduvall@noaa.gov', 1); --4to Cliente
 
 --RF3 - REGISTRAR TIPO DE HABITACIÓN
 --Registra la descripción de los tipos de habitaciones de los cuales dispone el hotel con su dotación
@@ -140,18 +141,18 @@ INSERT INTO HabitacionesHotel VALUES(1,'501');
 INSERT INTO HabitacionesHotel VALUES(1,'502');
 INSERT INTO HabitacionesHotel VALUES(1,'503');
 
-INSERT INTO PersonasHotel VALUES(1, 1, 1073251033);
-INSERT INTO PersonasHotel VALUES(1, 1, 2450736189);
-INSERT INTO PersonasHotel VALUES(1, 1, 5970714529);
-INSERT INTO PersonasHotel VALUES(1, 1, 7443940732);
-INSERT INTO PersonasHotel VALUES(1, 1, 3227492657);
-INSERT INTO PersonasHotel VALUES(1, 1, 6980626294);
-INSERT INTO PersonasHotel VALUES(1, 1, 4620713277);
-INSERT INTO PersonasHotel VALUES(1, 1, 3991351237);
-INSERT INTO PersonasHotel VALUES(1, 2, 90080024243);
-INSERT INTO PersonasHotel VALUES(1, 1, 8387371999);
-INSERT INTO PersonasHotel VALUES(1, 3, 98052759820);
-INSERT INTO PersonasHotel VALUES(1, 1, 5439778536);
+INSERT INTO PersonasHotel VALUES(1, 1, '1073251033');
+INSERT INTO PersonasHotel VALUES(1, 1, '2450736189');
+INSERT INTO PersonasHotel VALUES(1, 1, '5970714529');
+INSERT INTO PersonasHotel VALUES(1, 1, '7443940732');
+INSERT INTO PersonasHotel VALUES(1, 1, '3227492657');
+INSERT INTO PersonasHotel VALUES(1, 1, '6980626294');
+INSERT INTO PersonasHotel VALUES(1, 1, '4620713277');
+INSERT INTO PersonasHotel VALUES(1, 1, '3991351237');
+INSERT INTO PersonasHotel VALUES(1, 2, '90080024243');
+INSERT INTO PersonasHotel VALUES(1, 1, '8387371999');
+INSERT INTO PersonasHotel VALUES(1, 3, '98052759820');
+INSERT INTO PersonasHotel VALUES(1, 1, '5439778536');
 
 INSERT INTO PlanesHotel VALUES(1, 1);
 INSERT INTO PlanesHotel VALUES(1, 2);

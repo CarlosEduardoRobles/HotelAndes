@@ -14,6 +14,8 @@ public interface VOConvencion
 	 */
 	public Integer getCantParticipantes();
 	
+	public String getNombre();
+	
 	/**
 	 * Metodo toString
 	 * @return metodo toString

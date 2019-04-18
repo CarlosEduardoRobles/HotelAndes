@@ -1,6 +1,6 @@
 package negocio;
 
-public class ServiciosHotel
+public class ServiciosHotel implements VOServiciosHotel
 {
 	private long idHotel, idServicio;
 	

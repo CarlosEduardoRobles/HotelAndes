@@ -1,5 +1,13 @@
 package persistencia;
 
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.Servicio;
+import negocio.ServiciosHotel;
+
 public class SQLServiciosHotel
 {
 	// ---------------------------------------------------------------
@@ -32,5 +40,11 @@ public class SQLServiciosHotel
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
-
+	public List<ServiciosHotel> darServiciosHotel (PersistenceManager pm, long idHotel)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM ServiciosHotel WHERE idHotel = ?");
+		q.setResultClass(ServiciosHotel.class);
+		q.setParameters(idHotel);
+		return (List<ServiciosHotel>) q.executeList();
+	}
 }

@@ -40,10 +40,39 @@ public class SQLHabitacion
 			Double precio) 
 	{
 		//Por conveniencia se asume que cuando se crea una habitacion, esta disponbile
-		char si = 'N';
-        Query q = pm.newQuery(SQL, "INSERT INTO Habitacion (numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, disponible)"
-        		+ " values (?, ?, ?, ?, ?, ?)");
-        q.setParameters(numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, si);
+		char si = 'Y';
+		char no = 'N';
+
+        Query q = pm.newQuery(SQL, "INSERT INTO Habitacion (numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, disponible, mantenimiento)"
+        		+ " values (?, ?, ?, ?, ?, ?, Y)");
+        q.setParameters(numeroHabitacion, descripcion, idTipoHabitacion, capacidad, precio, si, no);
+        return (long) q.executeUnique();
+	}
+	
+	/**
+	 * Cambia la disponibilidad de la habitacion para que esta deje de estar disponible, por lo tanto esta reservada
+	 * @param pm - Manejador de persistencia
+	 * @param numeroHabitacion - Numero de habitacion a la cual se le cambiara la disponibilidad
+	 * @return la habitacion con la disponibilidad cambiada
+	 */
+	public long cambiarDisponibilidadHabitacion (PersistenceManager pm, String numeroHabitacion) 
+	{
+        Query q = pm.newQuery(SQL, "UPDATE Habitacion SET disponible = 'N' WHERE numeroHabitacion = ?");
+        q.setParameters(numeroHabitacion);
+        return (long) q.executeUnique();
+	}
+	
+	public long comenzarMantenimiento (PersistenceManager pm, String numeroHabitacion) 
+	{
+        Query q = pm.newQuery(SQL, "UPDATE Habitacion SET mantenimiento = 'N' WHERE numeroHabitacion = ?");
+        q.setParameters(numeroHabitacion);
+        return (long) q.executeUnique();
+	}
+	
+	public long terminarMantenimiento (PersistenceManager pm, String numeroHabitacion) 
+	{
+        Query q = pm.newQuery(SQL, "UPDATE Habitacion SET mantenimiento = 'Y' WHERE numeroHabitacion = ?");
+        q.setParameters(numeroHabitacion);
         return (long) q.executeUnique();
 	}
 	
