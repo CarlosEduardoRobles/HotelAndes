@@ -36,5 +36,16 @@ public class ServiciosRequeridos implements VOServiciosRequeridos
 		return "ServiciosRequeridos [idConvencion=" + idConvencion + ", idServicio=" + idServicio
 				+ ", cantParticipantes=" + cantParticipantes + ", comienzoReserva=" + comienzoReserva
 				+ ", finalReserva=" + finalReserva + "]";
-	}	
+	}
+
+	public ServiciosRequeridos(long idConvencion, long idServicio, Integer cantParticipantes, Date comienzoReserva,
+			Date finalReserva) 
+	{
+		super();
+		this.idConvencion = idConvencion;
+		this.idServicio = idServicio;
+		this.cantParticipantes = cantParticipantes;
+		this.comienzoReserva = comienzoReserva;
+		this.finalReserva = finalReserva;
+	}		
 }

@@ -15,9 +15,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import negocio.Convencion;
+import negocio.Habitacion;
+import negocio.Persona;
 import negocio.Reserva;
 import negocio.ReservaServicio;
 import negocio.Servicio;
+import negocio.ServiciosRequeridos;
 import negocio.ServiciosTomados;
 
 public class PersistenciaHotelAndes 
@@ -203,6 +207,10 @@ public class PersistenciaHotelAndes
 	 */
 	private SQLUtenciliosPrestados sqlUtenciliosPrestados;
 	
+	private SQLConvencion sqlConvencion;
+	
+	private SQLServiciosRequeridos sqlServiciosRequeridos;
+	
 	//------------------------------------------------
 	//------------------Constructores-----------------
 	//------------------------------------------------
@@ -221,7 +229,8 @@ public class PersistenciaHotelAndes
 		tablas.add ("PERSONA"); tablas.add ("PERSONASHOTEL"); tablas.add ("PLANDECONSUMO"); tablas.add ("PLANESHOTEL"); tablas.add ("PRODUCTO");
 		tablas.add ("PRODUCTOSFACTURA"); tablas.add ("RESERVA"); tablas.add ("RESERVASERVICIO"); tablas.add ("ROL"); tablas.add ("SERVICIO");
 		tablas.add ("SERVICIOSHOTEL"); tablas.add ("SERVICIOSPLANCONSUMO"); tablas.add ("SERVICIOSTOMADOS"); tablas.add ("TIPOCONSUMO"); tablas.add ("TIPODOCUMENTO");
-		tablas.add ("TIPOHABITACION"); tablas.add ("TIPOSERVICIO"); tablas.add ("UTENCILIO"); tablas.add ("UTENCILIOSPRESTADOS");
+		tablas.add ("TIPOHABITACION"); tablas.add ("TIPOSERVICIO"); tablas.add ("UTENCILIO"); tablas.add ("UTENCILIOSPRESTADOS"); tablas.add("CONVENCION");
+		tablas.add("SERVICIOSREQUERIDOS");
 	}
 	
 	/**
@@ -302,7 +311,7 @@ public class PersistenciaHotelAndes
 		sqlReservaServicio = new SQLReservaServicio(this); sqlRol = new SQLRol(this); sqlServicio = new SQLServicio(this); sqlServiciosHotel = new SQLServiciosHotel(this);
 		sqlServiciosPlanConsumo = new SQLServiciosPlanConsumo(this); sqlServiciosTomados = new SQLServiciosTomados(this); sqlTipoConsumo = new SQLTipoConsumo(this);
 		sqlTipoDocumento = new SQLTipoDocumento(this); sqlTipoHabitacion = new SQLTipoHabitacion(this); sqlTipoServicio = new SQLTipoServicio(this); sqlUtencilio = new SQLUtencilio(this);
-		sqlUtenciliosPrestados = new SQLUtenciliosPrestados(this);
+		sqlUtenciliosPrestados = new SQLUtenciliosPrestados(this); sqlConvencion = new SQLConvencion(this); sqlServiciosRequeridos = new SQLServiciosRequeridos(this);
 	}
 	
 	private long nextval ()
@@ -402,44 +411,7 @@ public class PersistenciaHotelAndes
             pm.close();
         }
 	}
-
-	//RF9
-	public long registrarLlegadaCliente(long idReserva) {
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		try {
-			long resp = sqlReserva.checkIn(pm, idReserva);
-			return resp;
-		}
-		catch(Exception e) {
-			return -1;
-		}
-		finally {
-			if(tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
 	
-	//RF11
-	public long registrarSalidaCliente(long idReserva) {
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		try {
-			long resp = sqlReserva.checkOut(pm, idReserva);
-			return resp;
-		}
-		catch(Exception e) {
-			return -1;
-		}
-		finally {
-			if(tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
-		}
-	}
 	//---------------------------------------------------------------
 	//------------------------------RF8------------------------------
 	//---------------------------------------------------------------
@@ -482,12 +454,45 @@ public class PersistenciaHotelAndes
         }
         finally
         {
-            if (tx.isActive())
-            {
+            if (tx.isActive())            
                 tx.rollback();
-            }
+            
             pm.close();
         }
+	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF9------------------------------
+	//---------------------------------------------------------------
+	//RF9 - REGISTRAR LA LLEGADA DE UN CLIENTE AL HOTEL
+	//Registra la llegada de un cliente al hotel, correspondiente a una reserva ya registrada.
+	//Esta operación es realizada por un recepcionista del hotel.
+	public long registrarLlegadaCliente(long idReserva) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlReserva.checkIn(pm, idReserva);
+			tx.commit();
+			
+			log.trace("Se registro la llegada del cliente correctamente");
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive()) 
+				tx.rollback();
+			
+			pm.close();
+		}
 	}
 	
 	//---------------------------------------------------------------
@@ -519,11 +524,314 @@ public class PersistenciaHotelAndes
         }
         finally
         {
-            if (tx.isActive())
-            {
+            if (tx.isActive())            
                 tx.rollback();
-            }
+            
             pm.close();
         }
+	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF11-----------------------------
+	//---------------------------------------------------------------
+	//RF11 - REGISTRAR LA SALIDA DE UN CLIENTE
+	//Registra la salida de un cliente al hotel, con todo lo que eso implica. 
+	//Esta operación es realizada por un recepcionista del hotel.
+	public long registrarSalidaCliente(long idReserva) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlReserva.checkOut(pm, idReserva);
+            tx.commit();
+
+			log.trace("Se registro la salida del cliente correctamente");
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}	
+	
+	//---------------------------------------------------------------
+	//------------------------------RF12-----------------------------
+	//---------------------------------------------------------------
+	//RF12 - RESERVAR ALOJAMIENTO Y SERVICIOS PARA UNA CONVENCIÓN
+	//Dada una lista de tipos de habitación y la cantidad deseada y una lista de los servicios del hotel 
+	//requeridos por la convención, se debe encontrar las habitaciones y servicios que los satisfacen y 
+	//hacer las reservas individuales correspondientes. 
+	//La respuesta debe ser precisamente la lista de las habitaciones y de los servicios reservados.
+	public Convencion registarConvencion(Integer cantParticipantes, String nombre, String nit) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long id = nextval ();
+			long tuplasInsertadas = sqlConvencion.crearConvencion(pm, id, cantParticipantes, nombre, nit);
+            tx.commit();
+
+			log.trace(tuplasInsertadas);
+			return new Convencion(id, cantParticipantes, nombre, nit);
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}
+	
+	public Persona registrarPersona(long idTipoDocumento, long idRol, String documento, String nombre, String correo)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlPersona.
+					registrarPersona(pm, idTipoDocumento, idRol, documento, nombre, correo);
+            tx.commit();
+
+			log.trace(tuplasInsertadas);
+			return new Persona(idTipoDocumento, idRol, documento, nombre, correo);
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}		
+	}	
+	
+	public ServiciosRequeridos registrarServiciosRequeridos
+		(long idConvencion, long idServicio, Integer cantParticipantes, Date comienzoReserva, Date finalReserva)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long tuplasInsertadas = sqlServiciosRequeridos.
+					agregarServiciosRequeridos(pm, idConvencion, idServicio, cantParticipantes, comienzoReserva, finalReserva);
+            tx.commit();
+
+			log.trace(tuplasInsertadas);
+			return new ServiciosRequeridos(idConvencion, idServicio, cantParticipantes, comienzoReserva, finalReserva);
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}		
+	}	
+	
+	//---------------------------------------------------------------
+	//------------------------------RF13-----------------------------
+	//---------------------------------------------------------------
+	//RF13 - CANCELAR RESERVAS ASOCIADAS A UNA CONVENCIÓN
+	//De acuerdo con la dinámica de la convención, es posible que haya algunas habitaciones o servicios que 
+	//deben ser desreservados, pues no van a ser utilizados. 
+	//En el caso extremo que la convención no logró el número mínimo de participantes para ser viable económicamente, 
+	//la convención y todas las habitaciones y todos los servicios reservados deben ser vueltos a poner a 
+	//disposición de los clientes del hotel.
+	public long cancelarConvencion(long idReserva) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlReserva.checkOut(pm, idReserva);
+            tx.commit();
+
+			log.trace("Se registro la salida del cliente correctamente");
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF14-----------------------------
+	//---------------------------------------------------------------
+	//RF14 - REGISTRAR EL FIN DE UNA CONVENCIÓN
+	//Es equivalente a registrar la salida de un cliente del hotel, haciendo las verificaciones de estado 
+	//de todas las habitaciones y servicios asociados a la convención y las cuentas de todos los consumos asociados 
+	//a la misma (alimentación, alquiler de salas, por ejemplo).
+	
+	//---------------------------------------------------------------
+	//------------------------------RF15-----------------------------
+	//---------------------------------------------------------------
+	//RF15 - REGISTRAR LA ENTRADA A MANTENIMIENTO DE ALOJAMIENTOS O SERVICIOS DEL HOTEL
+	//Dada una lista de habitaciones o de servicios del hotel y un rango de fechas, dichas habitaciones y servicios no
+	//son susceptibles de ser reservados ni usados en ese rango de fechas. 
+	//Para los casos que haya reservas, se debe reasignar dichas reservas a habitaciones o servicios equivalentes 
+	//disponibles. 
+	//Para los casos en estén en uso, se debe trasladar al cliente Y SUS CONSUMOS a una nueva habitación disponible 
+	//equivalente. En caso de no tener disponible una equivalente, se asigna alguna de mejor perfil de 
+	//comodidad, pero se respeta el precio convenido anteriormente con el cliente.
+	public long registrarMantenimientoAlojamiento(String numeroHabitacion) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlHabitacion.comenzarMantenimiento(pm, numeroHabitacion);
+            tx.commit();
+
+			log.trace(resp);
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}
+	
+	public long registrarMantenimientoServicio(long idServicio) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlServicio.comenzarMantenimiento(pm, idServicio);
+            tx.commit();
+
+			log.trace(resp);
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}
+	
+	//---------------------------------------------------------------
+	//------------------------------RF16-----------------------------
+	//---------------------------------------------------------------
+	//RF16 - REGISTRAR EL FIN DEL MANTENIMIENTO DE ALOJAMIENTOS O SERVICIOS DEL HOTEL
+	//Dada una lista de habitaciones o de servicios del hotel, pone fin a las actividades de mantenimiento,
+	//quedando nuevamente disponibles para reservas y utilización por parte de los clientes.
+	public long registrarFinMantenimientoAlojamiento(String numeroHabitacion) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlHabitacion.terminarMantenimiento(pm, numeroHabitacion);
+            tx.commit();
+
+			log.trace(resp);
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
+	}
+	
+	public long registrarFinMantenimientoServicio(long idServicio) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try 
+		{
+			tx.begin();
+			long resp = sqlServicio.terminarMantenimiento(pm, idServicio);
+            tx.commit();
+
+			log.trace(resp);
+			return resp;
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return -1;
+		}
+		finally 
+		{
+			if(tx.isActive())
+				tx.rollback();
+			
+			pm.close();
+		}
 	}
 }

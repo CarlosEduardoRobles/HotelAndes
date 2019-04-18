@@ -1,5 +1,8 @@
 package persistencia;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
 public class SQLConvencion 
 {
 	//---------------------------------------------------------------
@@ -31,5 +34,31 @@ public class SQLConvencion
 	//---------------------------------------------------------------
 	//---------------------------Metodos-----------------------------
 	//---------------------------------------------------------------
-
+	public long crearConvencion (PersistenceManager pm, long id, Integer cantParticipantes, String nombre, String nit) 
+	{
+		Query q = pm.newQuery(SQL, "INSERT INTO Convencion (id, cantParticipantes, nombre, nit) values (?, ?, ?, ?)");
+	    q.setParameters(id, cantParticipantes, nombre, nit);
+        return (long) q.executeUnique();
+	}
+	
+	public void eliminarConvencionPorId (PersistenceManager pm, long id)
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM Convencion WHERE id = ?");
+	    q.setParameters(id);
+	    q.executeUnique();
+	}
+	
+	public void eliminarConvencionPorNombre (PersistenceManager pm, String nombre)
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM Convencion WHERE nombre = ?");
+	    q.setParameters(nombre);
+	    q.executeUnique();
+	}
+	
+	public void eliminarConvencionPorNit (PersistenceManager pm, String nit)
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM Convencion WHERE nit = ?");
+	    q.setParameters(nit);
+	    q.executeUnique();
+	}
 }

@@ -45,7 +45,7 @@ public class SQLReserva
         Query q = pm.newQuery(SQL, "INSERT INTO Reserva (id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, costo"
         		+ ", numeroPersonas, checkIn, checkOut, fechaEntrada, fechaSalida) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         q.setParameters(id, idTipoDocumentoPersona, documentoPersona, numeroHabitacion, numeroPersonas, no, no, fechaEntrada, fechaSalida);
-        return ((BigDecimal) q.executeUnique()).longValue ();
+        return (long) q.executeUnique();
 	}
 	
 	public long checkIn (PersistenceManager pm, long idReserva) 
@@ -57,10 +57,8 @@ public class SQLReserva
 	
 	public long checkOut (PersistenceManager pm, long idReserva) 
 	{
-        Query q = pm.newQuery(SQL, "UPDATE Reserva SET checkOut='Y' WHERE id = ?");
+        Query q = pm.newQuery(SQL, "UPDATE Reserva SET checkOut ='Y' WHERE id = ?");
         q.setParameters(idReserva);
         return (long) q.executeUnique();
 	}
-
-
 }

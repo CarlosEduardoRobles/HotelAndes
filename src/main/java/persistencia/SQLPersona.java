@@ -1,5 +1,8 @@
 package persistencia;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
 public class SQLPersona 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +35,11 @@ public class SQLPersona
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
-
+	public long registrarPersona (PersistenceManager pm, long idTipoDocumento, long idRol, String documento, String nombre, String correo) 
+	{
+		Query q = pm.newQuery(SQL, "INSERT INTO Persona (idTipoDocumento, idRol, documento, nombre, correo) "
+				+ "values (?, ?, ?, ?, ?)");
+	    q.setParameters(idTipoDocumento, idRol, documento, nombre, correo);
+        return (long) q.executeUnique();
+	}
 }
