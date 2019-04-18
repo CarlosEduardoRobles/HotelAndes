@@ -1,5 +1,12 @@
 package persistencia;
 
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.PlanesHotel;
+
 public class SQLPlanesHotel 
 {
 	// ---------------------------------------------------------------
@@ -32,6 +39,44 @@ public class SQLPlanesHotel
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long adicionarPlanesHotel(PersistenceManager pm, Long idHotel, Long idPlanConsumo) {
+		Query q = pm.newQuery(SQL, "INSERT INTO PlanesHotel WHERE idHotel = ? AND idPlanConsumo = ?");
+		q.setParameters(idHotel, idPlanConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long eliminarPersonasHotel(PersistenceManager pm, Long idHotel, Long idPlanConsumo) {
+		Query q = pm.newQuery(SQL, "DELETE FROM PersonasHotel WHERE idHotel = ? AND idPlanConsumo = ?");
+		q.setParameters(idHotel, idPlanConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @return
+	 */
+	public List<PlanesHotel> darTodosPersonasHotel(PersistenceManager pm) {
+		Query q = pm.newQuery(SQL, "SELECT * FROM PlanesHotel");
+		q.setResultClass(PlanesHotel.class);
+		List<PlanesHotel> rta = (List<PlanesHotel>) q.execute();
+		return rta;
+	}
 
 
 }

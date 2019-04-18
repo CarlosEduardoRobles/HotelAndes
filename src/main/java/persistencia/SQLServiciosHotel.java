@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-import negocio.Servicio;
 import negocio.ServiciosHotel;
 
 public class SQLServiciosHotel
@@ -40,6 +38,7 @@ public class SQLServiciosHotel
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
+
 	public List<ServiciosHotel> darServiciosHotel (PersistenceManager pm, long idHotel)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM ServiciosHotel WHERE idHotel = ?");
@@ -47,4 +46,44 @@ public class SQLServiciosHotel
 		q.setParameters(idHotel);
 		return (List<ServiciosHotel>) q.executeList();
 	}
+
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long adicionarServiciosHotel(PersistenceManager pm, Long idHotel, Long idServicio) {
+		Query q = pm.newQuery(SQL, "INSERT INTO ServiciosHotel WHERE idHotel = ? AND idServicio = ?");
+		q.setParameters(idHotel, idServicio);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long eliminarServiciosHotel(PersistenceManager pm, Long idHotel, Long idServicio) {
+		Query q = pm.newQuery(SQL, "DELETE FROM ServiciosHotel WHERE idHotel = ? AND idServicio = ?");
+		q.setParameters(idHotel, idServicio);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @return
+	 */
+	public List<ServiciosHotel> darHabitacionesHotel(PersistenceManager pm) {
+		Query q = pm.newQuery(SQL, "SELECT * FROM ServiciosHotel");
+		q.setResultClass(ServiciosHotel.class);
+		List<ServiciosHotel> rta = (List<ServiciosHotel>) q.execute();
+		return rta;
+	}
+
 }

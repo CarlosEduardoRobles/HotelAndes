@@ -1,5 +1,12 @@
 package persistencia;
 
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import negocio.FacturasCuentaConsumo;
+
 public class SQLFacturasCuentaConsumo 
 {
 	// ---------------------------------------------------------------
@@ -32,5 +39,43 @@ public class SQLFacturasCuentaConsumo
 	// ---------------------------------------------------------------
 	// ---------------------------Metodos-----------------------------
 	// ---------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long adicionarFacturaCuentaConsumo(PersistenceManager pm, Long idFactura, Long idCuentaConsumo) {
+		Query q = pm.newQuery(SQL, "INSERT INTO FacturasCuentaConsumo WHERE idFactura = ? AND idCuentaConsumo = ?");
+		q.setParameters(idFactura, idCuentaConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @param idReserva
+	 * @param idPlanConsumo
+	 * @return
+	 */
+	public long eliminarFacturaCuentaConsumo(PersistenceManager pm, Long idFactura, Long idCuentaConsumo) {
+		Query q = pm.newQuery(SQL, "DELETE FROM FacturasCuentaConsumo WHERE idFactura = ? AND idCuentaConsumo = ?");
+		q.setParameters(idFactura, idCuentaConsumo);
+		return (long) q.executeUnique();
+	}
+	
+	/**
+	 * 
+	 * @param pm
+	 * @return
+	 */
+	public List<FacturasCuentaConsumo> darTodosFacturaCuentaConsumo(PersistenceManager pm) {
+		Query q = pm.newQuery(SQL, "SELECT * FROM FacturasCuentaConsumo");
+		q.setResultClass(FacturasCuentaConsumo.class);
+		List<FacturasCuentaConsumo> rta = (List<FacturasCuentaConsumo>) q.execute();
+		return rta;
+	}
 
 }
